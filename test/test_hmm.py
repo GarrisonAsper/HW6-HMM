@@ -36,8 +36,9 @@ def test_mini_weather():
     assert np.isclose(forward_prob, 0.03506, atol=1e-5)
     
     #Test Viterbi algorithm
-    viterbi_sequence = hmm.viterbi(mini_input['observation_state_sequence'])
-    assert viterbi_sequence == list(mini_input['best_hidden_state_sequence'])
+    viterbi_sequence = np.array(hmm.viterbi(mini_input['observation_state_sequence']))
+    expected_sequence = np.array(mini_input['best_hidden_state_sequence'], dtype=str)
+    assert np.array_equal(viterbi_sequence, expected_sequence)
 
 
     #empty observation sequence
@@ -81,8 +82,9 @@ def test_full_weather():
     assert np.isclose(forward_prob, 1.68645e-11, atol=1e-16)
     
     # Test Viterbi Algorithm
-    viterbi_sequence = hmm.viterbi(full_input['observation_state_sequence'])
-    assert viterbi_sequence == list(full_input['best_hidden_state_sequence'])
+    viterbi_sequence = np.array(hmm.viterbi(full_input['observation_state_sequence']))
+    expected_sequence = np.array(full_input['best_hidden_state_sequence'], dtype=str)
+    assert np.array_equal(viterbi_sequence, expected_sequence)
 
 
 

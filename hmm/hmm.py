@@ -77,6 +77,10 @@ class HiddenMarkovModel:
         Returns:
             best_hidden_state_sequence(list): most likely list of hidden states that generated the sequence observed states
         """        
+        # Step 0. Fringe Case handling
+            # Handle edge case where input sequence is empty
+        if len(decode_observation_states) == 0:
+            return []  #empty sequence should return an empty state sequence
         
         # Step 1. Initialize variables
         

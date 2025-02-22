@@ -54,8 +54,8 @@ class HiddenMarkovModel:
         #iterate over both time T and number of hidden states N to sum the P(i ->j) * P(emission)
         for t in range(1, T):
             for j in range(N):
-                alpha[t, j] = np.sum(alpha[t-1, i] * self.transition_p[i, j] for i in range(N)) * self.emission_p[j, self.observation_states_dict[input_observation_states[t]]]
-        
+                alpha[t, j] = sum(alpha[t-1, i] * self.transition_p[i, j] for i in range(N)) * self.emission_p[j, self.observation_states_dict[input_observation_states[t]]]
+                
         # Step 3. Return final probability 
         #returns sum of the last alpha row
         return np.sum(alpha[T-1, :])
@@ -103,4 +103,4 @@ class HiddenMarkovModel:
 
         # Step 4. Return best hidden state sequence 
                 
-        return [self.hidden_states_dict[state] for state in best_hidden_state_sequence].append
+        return [self.hidden_states_dict[state] for state in best_hidden_state_sequence]

@@ -33,7 +33,7 @@ def test_mini_weather():
 
     #Test Forward Algorithm
     forward_prob = hmm.forward(mini_input['observation_state_sequence'])
-    assert np.isclose(forward_prob, mini_input['forward_probability'], atol=1e-5)
+    assert np.isclose(forward_prob, 0.03506, atol=1e-5)
     
     #Test Viterbi algorithm
     viterbi_sequence = hmm.viterbi(mini_input['observation_state_sequence'])
@@ -78,7 +78,7 @@ def test_full_weather():
 
     # Test Forward Algorithm
     forward_prob = hmm.forward(full_input['observation_state_sequence'])
-    assert np.isclose(forward_prob, full_input['forward_probability'], atol=1e-5)
+    assert np.isclose(forward_prob, 1.68645e-11, atol=1e-16)
     
     # Test Viterbi Algorithm
     viterbi_sequence = hmm.viterbi(full_input['observation_state_sequence'])

@@ -40,6 +40,10 @@ class HiddenMarkovModel:
         Returns:
             forward_probability (float): forward probability (likelihood) for the input observed sequence  
         """        
+
+        # Step 0. Handle edge case 
+        if len(input_observation_states) == 0:
+            return 0.0  # An empty sequence has probability 0
         
         # Step 1. Initialize variables
         T = len(input_observation_states)

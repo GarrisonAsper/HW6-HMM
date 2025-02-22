@@ -48,7 +48,7 @@ class HiddenMarkovModel:
 
         #initialization of forward probability matrix alpha
         for i in range(N):
-            alpha[t, j] = np.sum(alpha[t-1, i] * self.transition_p[i, j] for i in range(N)) * self.emission_p[j, self.observation_states_dict[input_observation_states[t]]]
+            alpha[0, i] = self.prior_p[i] * self.emission_p[i, self.observation_states_dict[input_observation_states[0]]]
         
         # Step 2. Calculate probabilities
         #iterate over both time T and number of hidden states N to sum the P(i ->j) * P(emission)
@@ -58,7 +58,7 @@ class HiddenMarkovModel:
 
         # Step 3. Return final probability 
         #returns sum of the last alpha row
-        return np.sum(alpha[T-1, :])
+        return sum(alpha[T-1, :])
 
 
     def viterbi(self, decode_observation_states: np.ndarray) -> list:

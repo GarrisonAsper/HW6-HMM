@@ -62,6 +62,43 @@ Finally, please update your README with a brief description of your methods.
   [ ] github actions (install + pytest) (optional)
 
 
+## Methods
+
+hmm.forward():
+    """
+1. Initialize:
+   - Create an `alpha` table of size (T x N) initialized to zero.
+   - Set `alpha[0, i] = prior_p[i] * emission_p[i, observation_0]` for all hidden states i.
+
+2. Calculate Probabilies:
+   - For each time step t from 1 to T:
+     - For each hidden state j:
+       - Compute `alpha[t, j] = sum(alpha[t-1, i] * transition_p[i, j] for i in hidden states) * emission_p[j, observation_t]`.
+
+3. Return Final Probability:
+   - Compute the total probability as `sum(alpha[T-1, :])` and return.
+"""
+hmm.veterbi():
+"""
+1. Initialize:
+   - Create `viterbi_table` of size (T x N), initialized with -inf.
+   - Create `backpointer` table of size (T x N), initialized with zeros.
+   - Set `viterbi_table[0, i] = log(prior_p[i]) + log(emission_p[i, observation_0])` for all hidden states i.
+
+2. Calculate Probabilities:
+   - For each time step t from 1 to T:
+     - For each hidden state j:
+       - Compute the maximum probability:
+         - `max_prob = max(viterbi_table[t-1, i] + log(transition_p[i, j]) for i in hidden states)`
+       - Update `viterbi_table[t, j] = max_prob + log(emission_p[j, observation_t])`.
+       - Store `backpointer[t, j] = argmax(viterbi_table[t-1, i] + log(transition_p[i, j]))`.
+
+3. Backtracking:
+   - Find the best final state `best_last_state = argmax(viterbi_table[T-1, :])`.
+   - Start from `best_last_state`.
+   - Trace back using `backpointer` to reconstruct the most probable hidden state sequence.
+"""
+
 ## Completing the Assignment 
 Push your code to GitHub with passing unit tests, and submit a link to your repository [here](https://forms.gle/xw98ZVQjaJvZaAzSA)
 

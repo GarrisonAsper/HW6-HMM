@@ -22,16 +22,38 @@ def test_mini_weather():
     mini_hmm=np.load('./data/mini_weather_hmm.npz')
     mini_input=np.load('./data/mini_weather_sequences.npz')
 
+    hmm = HiddenMarkovModel(
+        mini_hmm['observation_states'],
+        mini_hmm['hidden_states'],
+        mini_hmm['prior_p'],
+        mini_hmm['transition_p'],
+        mini_hmm['emission_p']
+    )
 
 
-
-
-
+    #Test Forward Algorithm
+    forward_prob = hmm.forward(mini_input['observation_state_sequence'])
+    assert np.isclose(forward_prob, mini_input['forward_probability'], atol=1e-5)
     
+    #Test Viterbi algorithm
+    viterbi_sequence = hmm.viterbi(mini_input['observation_state_sequence'])
+    assert viterbi_sequence == list(mini_input['best_hidden_state_sequence'])
+
+
+    #empty observation sequence
+    empty_sequence = np.array([])
+    empty_forward_prob = hmm.forward(empty_sequence)
+    assert empty_forward_prob == 0
+    empty_viterbi_sequence = hmm.viterbi(empty_sequence)
+    assert empty_viterbi_sequence == []
+    
+    #single observation sequence
+    single_obs_sequence = np.array([mini_input['observation_state_sequence'][0]])
+    single_forward_prob = hmm.forward(single_obs_sequence)
+    assert single_forward_prob >= 0
+    single_viterbi_sequence = hmm.viterbi(single_obs_sequence)
+    assert len(single_viterbi_sequence) == 1
    
-    pass
-
-
 
 def test_full_weather():
 
@@ -44,8 +66,24 @@ def test_full_weather():
     Assert that the state sequence returned is in the right order, has the right number of states, etc. 
 
     """
+    full_hmm = np.load('./data/full_weather_hmm.npz')
+    full_input = np.load('./data/full_weather_sequences.npz')
+    hmm = HiddenMarkovModel(
+        full_hmm['observation_states'],
+        full_hmm['hidden_states'],
+        full_hmm['prior_p'],
+        full_hmm['transition_p'],
+        full_hmm['emission_p']
+    )
 
-    pass
+    # Test Forward Algorithm
+    forward_prob = hmm.forward(full_input['observation_state_sequence'])
+    assert np.isclose(forward_prob, full_input['forward_probability'], atol=1e-5)
+    
+    # Test Viterbi Algorithm
+    viterbi_sequence = hmm.viterbi(full_input['observation_state_sequence'])
+    assert viterbi_sequence == list(full_input['best_hidden_state_sequence'])
+
 
 
 
